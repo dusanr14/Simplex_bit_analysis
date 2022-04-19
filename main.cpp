@@ -12,12 +12,18 @@
 #define ROWSIZE (NUMOFSLACK+1)
 #define COLSIZE (NUMOFSLACK+NUMOFVAR+1)
 
-#define WIDTH 40
-#define FIXED_POINT 19
+#define DELILAC 100 ///promena
+#define QUOT 10 ///promena
+
+#define WIDTH 31	//radi sa 40
+#define FIXED_POINT 11	//radi sa 19
 using namespace std;
 
 typedef sc_dt::sc_fixed_fast<WIDTH,FIXED_POINT> num_t;
 
+////
+int brojac = 0;
+////
 num_t wv_fixed[ROWSIZE][COLSIZE];
 //od_profesora//num_t* wv_fixed;
 num_t pivot_fixed;
@@ -54,9 +60,9 @@ bool passCheck(const float wv[ROWSIZE][COLSIZE], const float wv_cpy[ROWSIZE][COL
         {
         	miss = ( 1- (wv_cpy[ROWSIZE-1][COLSIZE-1]/ wv[ROWSIZE-1][COLSIZE-1])) * 100;
         }
-        cout<< "Sa floating point vrednostima: "<<wv[ROWSIZE-1][COLSIZE-1]<<endl;
-        cout<< "Sa ficed point vrednostima: "<<wv_cpy[ROWSIZE-1][COLSIZE-1]<<endl;
-        cout<<"Greska u procentima: "<<miss<<endl;
+        //cout<< "Sa floating point vrednostima: "<<QUOT*DELILAC*wv[ROWSIZE-1][COLSIZE-1]<<endl;
+        //cout<< "Sa ficed point vrednostima: "<<QUOT*DELILAC*wv_cpy[ROWSIZE-1][COLSIZE-1]<<endl;
+        //cout<<"Greska u procentima: "<<miss<<endl;
 	 if(miss < delta)
 	 {
 	 	return true;
@@ -257,7 +263,7 @@ void solutions(float wv[ROWSIZE][COLSIZE])
 
         if(count0 == ROWSIZE - 2 )
         {
-            cout<<"variable"<<i+1<<": "<<wv[index][COLSIZE-1]<<endl;  //every basic column has the values, get it form B array
+            cout<<"variable"<<i+1<<": "<<DELILAC*wv[index][COLSIZE-1]<<endl;  //every basic column has the values, get it form B array
         }
         else
         {
@@ -312,6 +318,7 @@ void simplexCalculate(float wv[ROWSIZE][COLSIZE])
 	
 	
     }
+    
     //printing Results
     if(unbounded)
     {
@@ -415,6 +422,7 @@ int sc_main(int argc, char*argv[])
         for(int iter = 0; iter < 1000; iter++)
         {
         matrixZero(wv);
+	//////////////////////////makematrix
 	if(myFile.is_open())
         {
         	for(int j = 0; j < ROWSIZE; j++)
@@ -430,7 +438,19 @@ int sc_main(int argc, char*argv[])
 		}		
 	
    	 }
-   
+   	//////////////////////////
+   	
+	///promena
+	for(int j=0;j<ROWSIZE; j++)
+	{
+		for(int i =0;i<COLSIZE;i++)
+		{
+			wv[j][i]=wv[j][i]/QUOT;
+		}
+		wv[j][COLSIZE-1]=wv[j][COLSIZE-1]/DELILAC;
+	}
+	///
+	   	
 	addOnesDiagonal(wv);
 	copyMatrix(wv_cpy,wv);
 	simplexCalculate_orig(wv);
@@ -439,9 +459,11 @@ int sc_main(int argc, char*argv[])
         	cout<<"TRUE";
         else
         	cout<<"FALSE";
-        cout<<endl<<"pc = "<<pc<<endl;
+        //cout<<endl<<"pc = "<<pc<<endl;
         provera = provera && pc;
         cout<<endl<<endl;
+        cout<<endl<<"brojac: " <<brojac <<endl<<endl;
+        brojac ++;
         }
 	
 	cout<<endl;
