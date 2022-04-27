@@ -12,8 +12,8 @@
 #define ROWSIZE (NUMOFSLACK+1)
 #define COLSIZE (NUMOFSLACK+NUMOFVAR+1)
 
-#define DELILAC 100 ///promena
-#define QUOT 10 ///promena
+#define D1 1000 ///promena
+#define D2 10 ///promena
 
 #define WIDTH 31	//radi sa 40
 #define FIXED_POINT 11	//radi sa 19
@@ -21,11 +21,10 @@ using namespace std;
 
 typedef sc_dt::sc_fixed_fast<WIDTH,FIXED_POINT> num_t;
 
-////
 int brojac = 0;
-////
+
 num_t wv_fixed[ROWSIZE][COLSIZE];
-//od_profesora//num_t* wv_fixed;
+
 num_t pivot_fixed;
 static int iter = 1;
 
@@ -60,9 +59,9 @@ bool passCheck(const float wv[ROWSIZE][COLSIZE], const float wv_cpy[ROWSIZE][COL
         {
         	miss = ( 1- (wv_cpy[ROWSIZE-1][COLSIZE-1]/ wv[ROWSIZE-1][COLSIZE-1])) * 100;
         }
-        //cout<< "Sa floating point vrednostima: "<<QUOT*DELILAC*wv[ROWSIZE-1][COLSIZE-1]<<endl;
-        //cout<< "Sa ficed point vrednostima: "<<QUOT*DELILAC*wv_cpy[ROWSIZE-1][COLSIZE-1]<<endl;
-        //cout<<"Greska u procentima: "<<miss<<endl;
+        cout<< "Sa floating point vrednostima: "<<D2*D1*wv[ROWSIZE-1][COLSIZE-1]<<endl;
+        cout<< "Sa ficed point vrednostima: "<<D2*D1*wv_cpy[ROWSIZE-1][COLSIZE-1]<<endl;
+        cout<<"Greska u procentima: "<<miss<<endl;
 	 if(miss < delta)
 	 {
 	 	return true;
@@ -263,7 +262,7 @@ void solutions(float wv[ROWSIZE][COLSIZE])
 
         if(count0 == ROWSIZE - 2 )
         {
-            cout<<"variable"<<i+1<<": "<<DELILAC*wv[index][COLSIZE-1]<<endl;  //every basic column has the values, get it form B array
+            cout<<"variable"<<i+1<<": "<<D1*wv[index][COLSIZE-1]<<endl;  //every basic column has the values, get it form B array
         }
         else
         {
@@ -272,7 +271,7 @@ void solutions(float wv[ROWSIZE][COLSIZE])
     }
 
     cout<<""<<endl;
-    cout<<endl<<"Optimal solution is "<<wv[ROWSIZE-1][COLSIZE-1]<<endl;
+    cout<<endl<<"Optimal solution is "<<D1*D2*wv[ROWSIZE-1][COLSIZE-1]<<endl;
 }
 void simplexCalculate(float wv[ROWSIZE][COLSIZE])
 {
@@ -435,7 +434,7 @@ int sc_main(int argc, char*argv[])
 		for(int j = 0;j< NUMOFSLACK;j++)
 		{
 			myFile >> wv[j][COLSIZE-1];
-		}		
+		}	
 	
    	 }
    	//////////////////////////
@@ -445,9 +444,9 @@ int sc_main(int argc, char*argv[])
 	{
 		for(int i =0;i<COLSIZE;i++)
 		{
-			wv[j][i]=wv[j][i]/QUOT;
+			wv[j][i]=wv[j][i]/D2;
 		}
-		wv[j][COLSIZE-1]=wv[j][COLSIZE-1]/DELILAC;
+		wv[j][COLSIZE-1]=wv[j][COLSIZE-1]/D1;
 	}
 	///
 	   	
