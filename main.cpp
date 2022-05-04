@@ -12,11 +12,11 @@
 #define ROWSIZE (NUMOFSLACK+1)
 #define COLSIZE (NUMOFSLACK+NUMOFVAR+1)
 
-#define D1 1000 ///promena
-#define D2 10 ///promena
+#define D1 1000
+#define D2 10 
 
-#define WIDTH 31	//radi sa 40
-#define FIXED_POINT 11	//radi sa 19
+#define WIDTH 31	//works with 40
+#define FIXED_POINT 11	//works with 19
 using namespace std;
 
 typedef sc_dt::sc_fixed_fast<WIDTH,FIXED_POINT> num_t;
@@ -41,7 +41,6 @@ void copy2fix(num_t wv_fixed[ROWSIZE][COLSIZE],const float wv[ROWSIZE][COLSIZE],
 			std::cout << "Overflow in conversion.\n";
 		
 		wv_fixed[j][i] = d;
-		//od_profesora//wv_fixed[i*ROWSIZE+j] = d;
 		}
 
 	}
@@ -103,28 +102,8 @@ void print(float wv[ROWSIZE][COLSIZE])
         cout<<endl<<endl<<endl;
 }
 ///this function is transfered in main() because we needed to loop this function
-/*void makeMatrix(float wv[ROWSIZE][COLSIZE])
-{
-	
-	fstream myFile;
-	
-        myFile.open("baza.txt",ios::in); //otvaram fajl u read modu
-	if(myFile.is_open())
-    {
-        for(int j = 0; j < ROWSIZE; j++)
-        {
-            for(int i = 0; i< NUMOFVAR; i++)
-            {
-              myFile >> wv[j][i];
-            }
-        }
-		for(int j = 0;j< NUMOFSLACK;j++)
-		{
-			myFile >> wv[j][COLSIZE-1];
-		}
-    }
-    myFile.close();
-}
+/*
+void makeMatrix(float wv[ROWSIZE][COLSIZE])
 */
 void matrixZero(float wv[ROWSIZE][COLSIZE])
 {
@@ -145,7 +124,7 @@ void addOnesDiagonal(float wv[ROWSIZE][COLSIZE])
 		}
 	}
 }
-//this function is added only for this , bit analisys application
+//this function is added only for purpose of bit analisys
 void copyMatrix(float wv_cpy[ROWSIZE][COLSIZE],float wv[ROWSIZE][COLSIZE])
 {
 	for(int j=0;j<ROWSIZE; j++)
@@ -417,7 +396,7 @@ int sc_main(int argc, char*argv[])
 	
 	fstream myFile;
 	
-        myFile.open("baza.txt",ios::in); //otvaram fajl u read modu
+        myFile.open("baza.txt",ios::in); //opening file in read mode
         for(int iter = 0; iter < 1000; iter++)
         {
         matrixZero(wv);
@@ -437,9 +416,9 @@ int sc_main(int argc, char*argv[])
 		}	
 	
    	 }
-   	//////////////////////////
    	
-	///promena
+   	
+	///normalization
 	for(int j=0;j<ROWSIZE; j++)
 	{
 		for(int i =0;i<COLSIZE;i++)
@@ -463,6 +442,8 @@ int sc_main(int argc, char*argv[])
         cout<<endl<<endl;
         cout<<endl<<"brojac: " <<brojac <<endl<<endl;
         brojac ++;
+        
+        //solutions(wv_cpy)
         }
 	
 	cout<<endl;
@@ -475,4 +456,3 @@ int sc_main(int argc, char*argv[])
     return 0;
 }
 
-//napravim python skriptu koja kompajlira, menja w i h, i onda vidim kad dobijem zadovoljavajuci rezultat
